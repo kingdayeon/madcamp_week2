@@ -29,6 +29,7 @@ export default function App() {
         <Stars />                         // 별들 렌더링
         <OrbitControls />                 // 마우스로 화면 조작 가능하게 함
       </Canvas>
+      
     </div>
   )
 }
