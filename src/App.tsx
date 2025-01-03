@@ -8,8 +8,11 @@ import Navigation from './components/Navigation';
 import { Stars } from './components/three/Stars';
 import MySpace from './pages/MySpace';
 import Gallery from './pages/Gallery';
-import Horoscope from './pages/Horoscope';
+// import Horoscope from './pages/Horoscope/Horoscope';
+import Horoscope from './pages/Horoscope/index';
 import MyPage from './pages/MyPage';
+import HoroscopeDetail from './pages/Horoscope/detail'; // Detail 컴포넌트 추가
+
 
 export default function App() {
   const location = useLocation();
@@ -56,6 +59,7 @@ export default function App() {
             <Route path="/" element={<MySpace />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/horoscope" element={<Horoscope />} />
+            <Route path="/horoscope/:sign" element={<HoroscopeDetail />} />
             <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </div>
