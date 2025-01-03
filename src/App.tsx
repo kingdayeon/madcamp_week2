@@ -1,4 +1,5 @@
 // src/App.tsx
+import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
@@ -14,17 +15,28 @@ export default function App() {
   const location = useLocation();
   const isMySpace = location.pathname === '/';
 
+  useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      if (location.pathname === '/' && !event.ctrlKey) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [location]);
+
   return (
     <div className="app">
       <Navigation />
       <div className="w-full h-screen">
         <Canvas
-          camera={{ 
+          camera={{
             position: [0, 0, 15],
-            fov: 75
+            fov: 75,
           }}
           style={{
-            background: '#070614'
+            background: '#070614',
           }}
         >
           <EffectComposer>
@@ -39,7 +51,7 @@ export default function App() {
           <Stars />
           {isMySpace && <OrbitControls />}
         </Canvas>
-        <div className="absolute inset-0 z-10 pointer-events-none">  {/* pointer-events-none 추가 */}
+        <div className="absolute inset-0" style={{ pointerEvents: isMySpace ? 'none' : 'auto' }}>
           <Routes>
             <Route path="/" element={<MySpace />} />
             <Route path="/gallery" element={<Gallery />} />

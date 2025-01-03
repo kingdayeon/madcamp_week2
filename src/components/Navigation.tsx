@@ -2,10 +2,10 @@
 import { Link, useLocation } from 'react-router-dom';
 
 const navItems = [
-  { path: '/', label: '내 우주' },
-  { path: '/gallery', label: '갤러리' },
-  { path: '/horoscope', label: '별자리 운세' },
-  { path: '/mypage', label: '마이페이지' },
+  { path: '/', label: 'My Space' },
+  { path: '/gallery', label: 'Gallery' },
+  { path: '/horoscope', label: 'Horoscope 🌟' },
+  { path: '/mypage', label: 'Mypage' },
 ];
 
 export default function Navigation() {

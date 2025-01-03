@@ -4,6 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
+.app {
+  @apply relative w-full h-screen overflow-y-auto; /* overflow-hidden 제거 */
+}
 
 .logo {
   height: 6em;
