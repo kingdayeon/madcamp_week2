@@ -1,4 +1,4 @@
-@import './styles/fonts.css';
+@import "./styles/fonts.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,12 +11,12 @@
   @apply w-fit xl:h-full flex xl:justify-between justify-start items-start flex-col xl:py-8 xl:px-36 sm:p-8 p-6 max-xl:gap-7 absolute z-10;
 }
 
-
 html,
 body {
-  font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
+  font-family: "Pretendard", system-ui, -apple-system, sans-serif;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  overflow-y: auto; /* 스크롤 가능하게 설정 */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,4 +31,18 @@ body {
 
 canvas {
   z-index: 30;
+}
+
+/* 스크롤바 스타일링 */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
 }
