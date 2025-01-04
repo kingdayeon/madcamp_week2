@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
@@ -8,10 +9,9 @@ import { Stars } from './components/three/Stars';
 import Landing from './pages/Landing';
 import MySpace from './pages/MySpace';
 import Gallery from './pages/Gallery';
-// import Horoscope from './pages/Horoscope/Horoscope';
 import Horoscope from './pages/Horoscope/index';
 import MyPage from './pages/Mypage';
-import HoroscopeDetail from './pages/Horoscope/detail'; // Detail 컴포넌트 추가
+import HoroscopeDetail from './pages/Horoscope/detail';
 import RandomPlanet from './components/planet/RandomPlanet';
 
 export default function App() {
@@ -45,6 +45,8 @@ export default function App() {
                 }}
                 style={{
                   background: '#070614',
+                  position: 'fixed',  // Canvas를 fixed로 설정
+                  zIndex: 0,         // 낮은 z-index
                 }}
               >
                 <EffectComposer>
@@ -57,17 +59,23 @@ export default function App() {
                 </EffectComposer>
                 <ambientLight intensity={0.5} />
                 <Stars />
-                {isMySpace && <OrbitControls />}
+                {isMySpace && <OrbitControls makeDefault />}
                 <RandomPlanet /> 
               </Canvas>
-              <div className="absolute inset-0" style={{ pointerEvents: isMySpace ? 'none' : 'auto' }}>
-                <Routes>
-                  <Route path="/home" element={<MySpace />} />
-                  <Route path="/gallery" element={<Gallery />} />
-                  <Route path="/horoscope" element={<Horoscope />} />
-                  <Route path="/horoscope/:sign" element={<HoroscopeDetail />} />
-                  <Route path="/mypage" element={<MyPage />} />
-                </Routes>
+              {/* UI 레이어 */}
+              <div className="relative w-full h-full" style={{ 
+                zIndex: 1,  // Canvas보다 높은 z-index
+                pointerEvents: 'none' // 기본적으로 포인터 이벤트 무시
+              }}>
+                <div style={{ pointerEvents: 'auto' }}> {/* 필요한 UI 요소만 포인터 이벤트 활성화 */}
+                  <Routes>
+                    <Route path="/home" element={<MySpace />} />
+                    <Route path="/gallery" element={<Gallery />} />
+                    <Route path="/horoscope" element={<Horoscope />} />
+                    <Route path="/horoscope/:sign" element={<HoroscopeDetail />} />
+                    <Route path="/mypage" element={<MyPage />} />
+                  </Routes>
+                </div>
               </div>
             </div>
           </div>
