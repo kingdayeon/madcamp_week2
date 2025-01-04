@@ -109,7 +109,7 @@ export default function App() {
   // 행성 목록 상태 배열
   const [planets, setPlanets] = useState<{ content: string; modelPath: string }[]>([]);
   // 아직 선택되지 않은 행성 목록
-  const [availablePlanets, setAvailablePlanets] = useState<number[]>(Array.from({ length: 12 }, (_, i) => i + 1));
+  const [availablePlanets, setAvailablePlanets] = useState<number[]>(Array.from({ length: 16 }, (_, i) => i + 1));
 
   // 행성 추가 함수
   const addPlanet = (content: string) => {
