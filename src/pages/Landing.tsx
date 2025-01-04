@@ -35,39 +35,18 @@ export default function Landing() {
       import.meta.env.VITE_GOOGLE_CLIENT_ID
     }&redirect_uri=${
       import.meta.env.VITE_GOOGLE_REDIRECT_URI
-    }&response_type=id_token&scope=openid%20profile%20email&nonce=randomNonce123`;
+    }&response_type=code&scope=openid%20profile%20email&nonce=randomNonce123`;
     window.location.href = googleOAuthURL;
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.hash.replace("#", "?")); // 해시를 파싱
-    const idToken = params.get("id_token");
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
 
-    if (idToken) {
-      const sendTokenToBackend = async () => {
-        try {
-          const response = await fetch("/api/users/auth/google", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ googleToken: idToken }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to authenticate with backend");
-          }
-
-          const data = await response.json();
-          console.log("User authenticated:", data);
-          localStorage.setItem("token", data.token);
-          navigate("/home"); // 성공 시 홈으로 리다이렉트
-        } catch (error) {
-          console.error("Error during backend authentication:", error);
-        }
-      };
-
-      sendTokenToBackend();
+    if (token) {
+      // 토큰 저장 후 홈으로 이동
+      localStorage.setItem("token", token);
+      navigate("/home");
     }
   }, [navigate]);
 
