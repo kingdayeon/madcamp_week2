@@ -31,35 +31,39 @@ export default function Landing() {
   }, []);
 
   const handleGoogleLogin = () => {
-    const googleOAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${import.meta.env.VITE_GOOGLE_CLIENT_ID}&redirect_uri=${import.meta.env.VITE_GOOGLE_REDIRECT_URI}&response_type=id_token&scope=profile email`;
+    const googleOAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${
+      import.meta.env.VITE_GOOGLE_CLIENT_ID
+    }&redirect_uri=${
+      import.meta.env.VITE_GOOGLE_REDIRECT_URI
+    }&response_type=id_token&scope=openid%20profile%20email&nonce=randomNonce123`;
     window.location.href = googleOAuthURL;
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.hash.replace('#', '?'));
-    const googleToken = params.get('id_token');
+    const params = new URLSearchParams(window.location.hash.replace("#", "?")); // 해시를 파싱
+    const idToken = params.get("id_token");
 
-    if (googleToken) {
+    if (idToken) {
       const sendTokenToBackend = async () => {
         try {
-          const response = await fetch('/api/users/auth/google', {
-            method: 'POST',
+          const response = await fetch("/api/users/auth/google", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
-            body: JSON.stringify({ googleToken }),
+            body: JSON.stringify({ googleToken: idToken }),
           });
 
           if (!response.ok) {
-            throw new Error('Failed to authenticate with backend');
+            throw new Error("Failed to authenticate with backend");
           }
 
           const data = await response.json();
-          console.log('User authenticated:', data);
-          localStorage.setItem('token', data.token);
-          navigate('/home'); // Redirect to home on success
+          console.log("User authenticated:", data);
+          localStorage.setItem("token", data.token);
+          navigate("/home"); // 성공 시 홈으로 리다이렉트
         } catch (error) {
-          console.error('Error during backend authentication:', error);
+          console.error("Error during backend authentication:", error);
         }
       };
 
