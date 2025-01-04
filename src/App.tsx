@@ -1,4 +1,3 @@
-// src/App.tsx
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
@@ -11,9 +10,9 @@ import MySpace from './pages/MySpace';
 import Gallery from './pages/Gallery';
 // import Horoscope from './pages/Horoscope/Horoscope';
 import Horoscope from './pages/Horoscope/index';
-import MyPage from './pages/MyPage';
+import MyPage from './pages/Mypage';
 import HoroscopeDetail from './pages/Horoscope/detail'; // Detail 컴포넌트 추가
-
+import RandomPlanet from './components/planet/RandomPlanet';
 
 export default function App() {
   const location = useLocation();
@@ -59,6 +58,7 @@ export default function App() {
                 <ambientLight intensity={0.5} />
                 <Stars />
                 {isMySpace && <OrbitControls />}
+                <RandomPlanet /> 
               </Canvas>
               <div className="absolute inset-0" style={{ pointerEvents: isMySpace ? 'none' : 'auto' }}>
                 <Routes>
