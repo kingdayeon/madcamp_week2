@@ -17,11 +17,11 @@ import HoroscopeDetail from './pages/Horoscope/detail'; // Detail 컴포넌트 �
 
 export default function App() {
   const location = useLocation();
-  const isMySpace = location.pathname === '/';
+  const isMySpace = location.pathname === '/home';
 
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
-      if (location.pathname === '/' && !event.ctrlKey) {
+      if (location.pathname === '/home' && !event.ctrlKey) {
         event.preventDefault();
       }
     };
