@@ -194,6 +194,8 @@ import * as THREE from 'three';
 import { ThreeEvent } from '@react-three/fiber';
 import { usePlanetStore } from '../../store/usePlanetStore';
 
+
+
 interface RandomPlanetProps {
   id: string;
   content: string;
@@ -205,7 +207,7 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
   const planetRef = useRef<THREE.Group>(null);
 
   // Zustand 스토어 함수 가져오기
-  const { setSelectedPlanet, setPlanetPositionAndScale, planetPositionsAndScales } = usePlanetStore();
+  const { selectedPlanet, setSelectedPlanet, setPlanetPositionAndScale, planetPositionsAndScales } = usePlanetStore();
 
   useEffect(() => {
     if (planetRef.current && !planetPositionsAndScales[id]) {
@@ -245,11 +247,21 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
     }
   });
 
-  // 행성을 클릭하면 Planet 객체 전체를 Zustand에 저장
+  // // 행성을 클릭하면 Planet 객체 전체를 Zustand에 저장
+  // const handleClick = (event: ThreeEvent<MouseEvent>) => {
+  //   event.stopPropagation();
+  //   setSelectedPlanet({ id, content, modelPath });
+  // };
+
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
+  
+    // 중복 클릭 방지
+    if (selectedPlanet?.id === id) return;
+  
     setSelectedPlanet({ id, content, modelPath });
   };
+  
 
   return (
     <primitive

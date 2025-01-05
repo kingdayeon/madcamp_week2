@@ -120,12 +120,21 @@ const ContainBucketModal = () => {
     setSelectedPlanet(null);
   };
 
-  // 달성 처리 함수
-  const handleComplete = () => {
+  // // 달성 처리 함수
+  // const handleComplete = () => {
+  //   if (!selectedPlanet) return;
+  //   completePlanet(selectedPlanet.id);
+  //   setSelectedPlanet(null); // 달성 후 모달 닫기
+  // };
+
+  const handleComplete = async () => {
     if (!selectedPlanet) return;
-    completePlanet(selectedPlanet.id);
-    setSelectedPlanet(null); // 달성 후 모달 닫기
+  
+    // 상태 업데이트 후 모달 닫기
+    await completePlanet(selectedPlanet.id);
+    setSelectedPlanet(null);
   };
+  
 
   // 선택된 행성이 없으면 모달을 렌더링하지 않음
   if (!selectedPlanet) return null;

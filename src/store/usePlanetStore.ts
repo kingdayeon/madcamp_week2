@@ -175,18 +175,36 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
 
   setSelectedPlanet: (planet) => set({ selectedPlanet: planet }),
 
+  // completePlanet: (id) =>
+  //   set((state) => {
+  //     const planetToComplete = state.planets.find((p) => p.id === id);
+  //     if (!planetToComplete) return state;
+
+  //     return {
+  //       ...state,
+  //       planets: state.planets.filter((p) => p.id !== id),
+  //       completedPlanets: [...state.completedPlanets, { ...planetToComplete, isCompleted: true }],
+  //       selectedPlanet: null,
+  //     };
+  //   }),
+
   completePlanet: (id) =>
     set((state) => {
-      const planetToComplete = state.planets.find((p) => p.id === id);
-      if (!planetToComplete) return state;
-
+      const planetIndex = state.planets.findIndex((p) => p.id === id);
+      if (planetIndex === -1) return state;
+  
+      // 현재 상태 변경
+      const updatedPlanets = [...state.planets];
+      const completedPlanet = { ...updatedPlanets[planetIndex], isCompleted: true };
+      updatedPlanets.splice(planetIndex, 1);
+  
       return {
-        ...state,
-        planets: state.planets.filter((p) => p.id !== id),
-        completedPlanets: [...state.completedPlanets, { ...planetToComplete, isCompleted: true }],
+        planets: updatedPlanets,
+        completedPlanets: [...state.completedPlanets, completedPlanet],
         selectedPlanet: null,
       };
     }),
+  
 
     setPlanetPositionAndScale: (id, position, scale) =>
       set((state) => ({
