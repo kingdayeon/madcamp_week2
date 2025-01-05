@@ -181,9 +181,9 @@
 // }));
 
 // store/usePlanetStore.ts
-
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
+
 export interface Planet {
   id: string;
   content: string;
@@ -204,6 +204,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
   planets: [],
   availablePlanets: Array.from({ length: 16 }, (_, i) => i + 1),
   selectedPlanet: null,
+
   addPlanet: (content) =>
     set((state) => {
       if (state.availablePlanets.length === 0) {
@@ -225,13 +226,13 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
         availablePlanets: state.availablePlanets.filter((num) => num !== planetNumber),
       };
     }),
+
   setSelectedPlanet: (planet) => set({ selectedPlanet: planet }),
-  toggleComplete: (id) => 
+
+  toggleComplete: (id) =>
     set((state) => ({
-      planets: state.planets.map(planet => 
-        planet.id === id 
-          ? { ...planet, isCompleted: !planet.isCompleted }
-          : planet
-      )
+      planets: state.planets.map((planet) =>
+        planet.id === id ? { ...planet, isCompleted: !planet.isCompleted } : planet
+      ),
     })),
 }));

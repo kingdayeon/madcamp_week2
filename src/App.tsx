@@ -14,6 +14,7 @@ import MyPage from './pages/Mypage';
 import HoroscopeDetail from './pages/Horoscope/detail';
 import RandomPlanet from './components/planet/RandomPlanet';
 import { usePlanetStore } from './store/usePlanetStore';
+import ContainBucketModal from './components/planet/ConatainBucketModal';
 
 export default function App() {
   const location = useLocation();
@@ -60,7 +61,7 @@ export default function App() {
                 <Stars />
                 {isMySpace && <OrbitControls makeDefault />}
                 {planets.map((planet) => (
-                  <RandomPlanet key={planet.id} content={planet.content} modelPath={planet.modelPath} />
+                  <RandomPlanet id={planet.id} content={planet.content} modelPath={planet.modelPath} />
                 ))}
               </Canvas>
               <div className="relative w-full h-full" style={{ zIndex: 1, pointerEvents: 'none' }}>
@@ -74,6 +75,8 @@ export default function App() {
                   </Routes>
                 </div>
               </div>
+              {/* 모달 추가 */}
+              <ContainBucketModal /> 
             </div>
           </div>
         }
