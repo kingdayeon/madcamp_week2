@@ -61,8 +61,9 @@ export default function App() {
                 <Stars />
                 {isMySpace && <OrbitControls makeDefault />}
                 {planets.map((planet) => (
-                  <RandomPlanet id={planet.id} content={planet.content} modelPath={planet.modelPath} />
-                ))}
+  <RandomPlanet key={planet.id} id={planet.id} content={planet.content} modelPath={planet.modelPath} />
+))}
+{/* key추가하니까 문제 해결 */}
               </Canvas>
               <div className="relative w-full h-full" style={{ zIndex: 1, pointerEvents: 'none' }}>
                 <div style={{ pointerEvents: 'auto' }}>
