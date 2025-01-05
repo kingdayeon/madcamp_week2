@@ -2,12 +2,10 @@
 import { usePlanetStore } from '../store/usePlanetStore';
 
 export default function BucketModal() {
-  const selectedPlanetId = usePlanetStore(state => state.selectedPlanetId);
-  const planets = usePlanetStore(state => state.planets);
-  const togglePlanetComplete = usePlanetStore(state => state.togglePlanetComplete);
+  const selectedPlanet = usePlanetStore(state => state.selectedPlanet);
+  // const planets = usePlanetStore(state => state.planets);
+  const completePlanet = usePlanetStore(state => state.completePlanet);
   const setSelectedPlanet = usePlanetStore(state => state.setSelectedPlanet);
-
-  const selectedPlanet = planets.find(p => p.id === selectedPlanetId);
 
   if (!selectedPlanet) return null;
 
@@ -20,13 +18,10 @@ export default function BucketModal() {
         <div className="flex items-center justify-between gap-4">
           <div className="text-white text-lg flex-grow">{selectedPlanet.content}</div>
           <button
-            onClick={() => togglePlanetComplete(selectedPlanet.id)}
-            className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center transition-colors
-              ${selectedPlanet.isCompleted ? 'bg-white' : 'bg-transparent'}`}
+            onClick={() => completePlanet(selectedPlanet.id)}
+            className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center transition-colors bg-transparent hover:bg-white hover:bg-opacity-20"
           >
-            {selectedPlanet.isCompleted && (
-              <span className="text-black">✓</span>
-            )}
+            ✓
           </button>
           <button
             onClick={() => setSelectedPlanet(null)}
