@@ -16,7 +16,7 @@ export default function MyPage() {
 
       try {
         console.log("start /api/users/me");
-        const response = await fetch("/api/users/me", {
+        const response = await fetch("http://projecthailmary.site:3000/api/users/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,7 +44,7 @@ export default function MyPage() {
     <div className="w-full h-full bg-black/70">
       <div className="p-8">
         <h1 className="text-white text-2xl font-medium">{user.name}의 마이페이지</h1>
-        <p>Email: {user.email}</p>
+        <p className="text-white text-2xl font-medium">Email: {user.email}</p>
       </div>
     </div>
   );
