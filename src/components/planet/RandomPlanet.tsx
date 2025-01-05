@@ -92,6 +92,8 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
     }
   }, [scene]);
 
+  
+
   useFrame(() => {
     if (planetRef.current) {
       planetRef.current.rotation.y += 0.002;
