@@ -1,7 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import mainButtonWhite from '../assets/icons/mainButtonWhite.png';
-
+import { usePlanetStore } from '../store/usePlanetStore';
 interface MySpaceProps {
   addPlanet: (content: string) => void; // 행성 추가 콜백 함수
 }
@@ -10,6 +10,12 @@ export default function MySpace({ addPlanet }: MySpaceProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bucketContent, setBucketContent] = useState('');
 
+  // Zustand 스토어에서 fetchPlanets 함수 가져오기
+  const fetchPlanets = usePlanetStore((state) => state.fetchPlanets);
+
+  useEffect(() => {
+    fetchPlanets(); // 페이지 로드 시 사용자의 행성 데이터를 가져옴
+  }, [fetchPlanets]);
 
   const handleAddToSpace = async () => {
     if (bucketContent.trim()) {

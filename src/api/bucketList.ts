@@ -22,3 +22,22 @@ export const createBucketList = async (bucketData: {
 
   return response.json(); // 생성된 버킷리스트 객체 반환
 };
+
+// 버킷리스트 가져오기
+export const getBucketLists = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('No token found');
+
+  const response = await fetch(`${API_URL}/api/buckets`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch bucket lists');
+  }
+
+  return response.json();
+};
