@@ -5,6 +5,7 @@ import {
   createBucketList,
   getBucketLists,
   completeBucket,
+  deleteBucket,
   getCompletedBuckets,
 } from '../api/bucketList';
 
@@ -39,6 +40,7 @@ export interface PlanetStore {
   addPlanet: (content: string) => void;
   setSelectedPlanet: (planet: Planet | null) => void;
   completePlanet: (id: string) => Promise<void>;
+  deletePlanet: (id: string) => Promise<void>;
   setPlanetPositionAndScale: (id: string, position: THREE.Vector3, scale: number) => void;
   fetchPlanets: () => Promise<void>;
   fetchCompletedPlanets: () => Promise<void>;
@@ -91,29 +93,41 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
   },
   // ✅ 선택된 행성 설정 함수
   setSelectedPlanet: (planet) => set({ selectedPlanet: planet }),
+
   // completePlanet 함수 수정
-completePlanet: async (id) => {
-  try {
-    await completeBucket(id);
-    
-    set((state) => {
-      const completedPlanet = state.planets.find(p => p.id === id);
-      return {
-        planets: state.planets.filter(planet => planet.id !== id),
-        completedPlanets: completedPlanet 
-          ? [...state.completedPlanets, completedPlanet]
-          : state.completedPlanets,
-        selectedPlanet: null  // 모달 닫기
-      };
-    });
-    
-  } catch (error) {
-    console.error('버킷리스트 완료 실패:', error);
-    throw error;
-  }
-},
+  completePlanet: async (id) => {
+    try {
+      await completeBucket(id);
+
+      set((state) => {
+        const completedPlanet = state.planets.find(p => p.id === id);
+        return {
+          planets: state.planets.filter(planet => planet.id !== id),
+          completedPlanets: completedPlanet 
+            ? [...state.completedPlanets, completedPlanet]
+            : state.completedPlanets,
+          selectedPlanet: null  // 모달 닫기
+        };
+      });
+    } catch (error) {
+      console.error('버킷리스트 완료 실패:', error);
+      throw error;
+    }
+  },
   
-  
+  deletePlanet: async(id) => {
+    try {
+      await deleteBucket(id);
+
+      set((state) => ({
+        planets: state.planets.filter((planet) => planet.id !== id),
+        selectedPlanet: null, // 모달 닫기
+      }));
+    } catch (error) {
+      console.error('버킷리스트 삭제 실패:', error);
+      throw error;
+    }
+  },
 
   // ✅ 행성 위치 및 크기 설정 함수
   setPlanetPositionAndScale: (id, position, scale) =>

@@ -61,6 +61,22 @@ export const completeBucket = async (id: string) => {
   return response.json();
 };
 
+export const deleteBucket = async (id: string) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('No token found');
+
+  const response = await fetch(`${API_URL}/api/buckets/${id}/delete`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  });
+
+  if (!response.ok) throw new Error('Failed to delete bucket');
+
+  return response.json()
+}
+
 // ✅ 완료된 버킷리스트 가져오기 API
 export const getCompletedBuckets = async () => {
   const token = localStorage.getItem('token');
