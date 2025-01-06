@@ -77,7 +77,7 @@ export default function Social() {
       // 친구 목록과 요청 목록 업데이트
       setFriendRequests((prev) => prev.filter((req) => req.request_email !== requesterEmail));
     } catch (error) {
-      alert("친구 요청 거절절에 실패했습니다.");
+      alert("친구 요청 거절에 실패했습니다.");
     }
   };
 
