@@ -10,13 +10,20 @@ export default function MySpace({ addPlanet }: MySpaceProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bucketContent, setBucketContent] = useState('');
 
-  const handleAddToSpace = () => {
+
+  const handleAddToSpace = async () => {
     if (bucketContent.trim()) {
-      addPlanet(bucketContent); // 부모 컴포넌트에 행성 추가 요청
-      setBucketContent('');
-      setIsModalOpen(false);
+      try {
+        await addPlanet(bucketContent); // ✅ 이제 비동기 함수로 변경
+        setBucketContent('');
+        setIsModalOpen(false);
+      } catch (error) {
+        console.error('버킷리스트 추가 실패:', error);
+        alert('버킷리스트 추가에 실패했습니다. 다시 시도해주세요.');
+      }
     }
   };
+  
 
   return (
     <div style={{ pointerEvents: 'auto' }}>

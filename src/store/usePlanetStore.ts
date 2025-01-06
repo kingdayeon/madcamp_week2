@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import * as THREE from 'three';
 
+import { createBucketList } from '../api/bucketList'; // API 함수 추가
+
 export interface Planet {
   id: string;
   content: string;
@@ -28,28 +30,43 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
   selectedPlanet: null,
   planetPositionsAndScales: {},
 
-  addPlanet: (content) =>
-    set((state) => {
-      if (state.availablePlanets.length === 0) {
-        alert('모든 행성이 이미 생성되었습니다!');
-        return state;
-      }
 
-      const randomIndex = Math.floor(Math.random() * state.availablePlanets.length);
-      const planetNumber = state.availablePlanets[randomIndex];
+addPlanet: async (content) => {
+  set((state) => {
+    if (state.availablePlanets.length === 0) {
+      alert('모든 행성이 이미 생성되었습니다!');
+      return state;
+    }
 
-      const newPlanet: Planet = {
-        id: uuidv4(),
-        content,
-        modelPath: `/models/planet${planetNumber}.glb`,
-      };
+    const randomIndex = Math.floor(Math.random() * state.availablePlanets.length);
+    const planetNumber = state.availablePlanets[randomIndex];
 
-      return {
-        ...state,
-        planets: [...state.planets, newPlanet],
-        availablePlanets: state.availablePlanets.filter((num) => num !== planetNumber),
-      };
-    }),
+    const newPlanet: Planet = {
+      id: uuidv4(),
+      content,
+      modelPath: `/models/planet${planetNumber}.glb`,
+    };
+
+    // ✅ 백엔드에 데이터 저장
+    createBucketList({
+      content: newPlanet.content,
+      modelPath: newPlanet.modelPath,
+      position: {
+        x: Math.random() * 20 - 10,
+        y: Math.random() * 20 - 10,
+        z: Math.random() * 20 - 10,
+      },
+    }).catch((error) => {
+      console.error('버킷리스트 생성 실패:', error);
+    });
+
+    return {
+      ...state,
+      planets: [...state.planets, newPlanet],
+      availablePlanets: state.availablePlanets.filter((num) => num !== planetNumber),
+    };
+  });
+},
 
   setSelectedPlanet: (planet) => set({ selectedPlanet: planet }),
   completePlanet: async (id) => {
