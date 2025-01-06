@@ -15,14 +15,18 @@ const ContainBucketModal = ({ onComplete }: ContainBucketModalProps) => {
 
   const handleComplete = async () => {
     if (!selectedPlanet || isProcessing) return;
-
-    setIsProcessing(true);
-    await completePlanet(selectedPlanet.id);
-    setSelectedPlanet(null);
-    setIsProcessing(false);
-
-    // 별똥별 효과 트리거
-    onComplete();
+  
+    try {
+      setIsProcessing(true);
+      await completePlanet(selectedPlanet.id);
+      onComplete();  // 별똥별 효과 트리거
+    } catch (error) {
+      console.error('Failed to complete planet:', error);
+      // 에러 처리
+    } finally {
+      setIsProcessing(false);
+      setSelectedPlanet(null);
+    }
   };
 
   if (!selectedPlanet) return null;

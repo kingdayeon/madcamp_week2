@@ -16,25 +16,26 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
   const planetRef = useRef<THREE.Group>(null);
 
   const { selectedPlanet, setSelectedPlanet, setPlanetPositionAndScale, planetPositionsAndScales } = usePlanetStore();
+// RandomPlanet.tsx 수정
+useEffect(() => {
+  if (planetRef.current && !planetPositionsAndScales[id]) {
+    const position = new THREE.Vector3(
+      (Math.random() - 0.5) * 30,  // 더 넓은 범위로
+      (Math.random() - 0.5) * 20,
+      (Math.random() - 0.5) * 20
+    );
 
-  useEffect(() => {
-    if (planetRef.current && !planetPositionsAndScales[id]) {
-      const position = new THREE.Vector3(
-        (Math.random() - 0.5) * 30,
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 20
-      );
+    // 모델의 실제 크기를 고려한 스케일 계산
+    const box = new THREE.Box3().setFromObject(planetRef.current);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    
+    const maxDimension = Math.max(size.x, size.y, size.z);
+    const scale = 1.5 / maxDimension;  // 4 대신 1.5 사용
 
-      const box = new THREE.Box3().setFromObject(planetRef.current);
-      const size = new THREE.Vector3();
-      box.getSize(size);
-
-      const maxDimension = Math.max(size.x, size.y, size.z);
-      const scale = 4 / maxDimension;
-
-      setPlanetPositionAndScale(id, position, scale);
-    }
-  }, [scene, id, planetPositionsAndScales, setPlanetPositionAndScale]);
+    setPlanetPositionAndScale(id, position, scale);
+  }
+}, [scene, id, planetPositionsAndScales, setPlanetPositionAndScale]);
 
   const storedData = planetPositionsAndScales[id];
 

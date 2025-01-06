@@ -140,9 +140,15 @@ export default function App() {
                   onComplete={() => setShowShootingStars(false)}
                 />
                 {isMySpace && <OrbitControls makeDefault />}
-                {planets.map((planet) => (
-                  <RandomPlanet key={planet.id} id={planet.id} content={planet.content} modelPath={planet.modelPath} />
-                ))}
+                // App.tsx 수정
+{planets.map((planet) => (
+  <RandomPlanet 
+    key={`planet-${planet.id}`}  // 고유한 key 제공
+    id={planet.id} 
+    content={planet.content} 
+    modelPath={planet.modelPath} 
+  />
+))}
               </Canvas>
               <div className="relative w-full h-full" style={{ zIndex: 1, pointerEvents: 'none' }}>
                 <div style={{ pointerEvents: 'auto' }}>
