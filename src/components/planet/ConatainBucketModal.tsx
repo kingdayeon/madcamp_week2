@@ -6,7 +6,7 @@ interface ContainBucketModalProps {
 }
 
 const ContainBucketModal = ({ onComplete }: ContainBucketModalProps) => {
-  const { selectedPlanet, setSelectedPlanet, completePlanet, completedPlanets } = usePlanetStore();
+  const { selectedPlanet, setSelectedPlanet, completePlanet, deletePlanet, completedPlanets } = usePlanetStore();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleClose = () => {
@@ -23,6 +23,20 @@ const ContainBucketModal = ({ onComplete }: ContainBucketModalProps) => {
     } catch (error) {
       console.error('Failed to complete planet:', error);
       // 에러 처리
+    } finally {
+      setIsProcessing(false);
+      setSelectedPlanet(null);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!selectedPlanet || isProcessing) return;
+
+    try {
+      setIsProcessing(true);
+      await deletePlanet(selectedPlanet.id);
+    } catch (err) {
+      console.error('Failed to delete planet:', err);
     } finally {
       setIsProcessing(false);
       setSelectedPlanet(null);
@@ -56,6 +70,15 @@ const ContainBucketModal = ({ onComplete }: ContainBucketModalProps) => {
             disabled={isProcessing || isCompleted}
           >
             {isCompleted ? '달성 완료! 🎉' : '달성! 🚀'}
+          </button>
+          <button
+            onClick={handleDelete}
+            className={`bg-white bg-opacity-20 text-white font-bold px-4 py-2 rounded-lg 
+              hover:bg-opacity-40 transition-all duration-300
+              ${isCompleted ? 'bg-green-500 bg-opacity-50' : ''}`}
+            disabled={isProcessing || isCompleted}
+          >
+            { '삭제하기' }
           </button>
         </div>
       </div>
