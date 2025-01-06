@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
+import { usePlanetStore,Planet } from "../store/usePlanetStore"; // ✅ Zustand 스토어 import
 
 interface User {
   name: string;
   email: string;
 }
 
-
 export default function MyPage() {
   const [user, setUser] = useState<User | null>(null);
+  const [completedBuckets, setCompletedBuckets] = useState<Planet[]>([]); // ✅ 타입 지정
 
+  // ✅ Zustand의 fetchCompletedPlanets 함수 호출
+  const fetchCompletedPlanets = usePlanetStore((state) => state.fetchCompletedPlanets);
+
+  // ✅ 마이페이지 로드 시 사용자 정보와 완료된 버킷리스트 가져오기
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
@@ -33,8 +38,16 @@ export default function MyPage() {
       }
     };
 
+    // ✅ 완료된 버킷리스트 가져오기
+    const fetchCompleted = async () => {
+      await fetchCompletedPlanets();
+      const completed = usePlanetStore.getState().completedPlanets;
+      setCompletedBuckets(completed); // ✅ 타입 일치
+    };
+
     fetchUser();
-  }, []);
+    fetchCompleted();
+  }, [fetchCompletedPlanets]);
 
   if (!user) {
     return <div>Loading user info...</div>;
@@ -45,6 +58,22 @@ export default function MyPage() {
       <div className="p-8">
         <h1 className="text-white text-2xl font-medium">{user.name}의 마이페이지</h1>
         <p className="text-white text-2xl font-medium">Email: {user.email}</p>
+      </div>
+
+      {/* ✅ 완료된 버킷리스트 목록 */}
+      <div className="p-8">
+        <h2 className="text-white text-xl font-bold">완료된 버킷리스트 🎉</h2>
+        {completedBuckets.length === 0 ? (
+          <p className="text-white">완료된 버킷리스트가 없습니다.</p>
+        ) : (
+          <ul className="text-white">
+            {completedBuckets.map((bucket) => (
+              <li key={bucket.id} className="p-2 bg-white bg-opacity-20 rounded-lg my-2">
+                {bucket.content}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
