@@ -17,11 +17,18 @@ interface FriendRequest {
   request_email: string;
 }
 
+interface BucketList {
+  content: string;
+  isCompleted: boolean;
+}
+
 export default function Social() {
-  const [isVisible, setIsVisible] = useState(false); // 창 가시성 상태
+  const [isVisible, setIsVisible] = useState(true); // 창 가시성 상태
   const [friends, setFriends] = useState<Friend[]>([]);
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
   const [targetEmail, setTargetEmail] = useState("");
+  const [friendBuckets, setFriendBuckets] = useState<BucketList[]>([]); // 친구의 버킷리스트
+  const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null); // 선택된 친구
 
   useEffect(() => {
     if (!isVisible) return; // 창이 열렸을 때만 데이터를 가져옴
@@ -84,6 +91,33 @@ export default function Social() {
     }
   };
 
+  const fetchFriendBuckets = async (friend: Friend) => {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found");
+
+    try {
+      const response = await fetch(
+        `http://projecthailmary.site:3000/api/buckets/friend?friendEmail=${friend.friend_email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const buckets = await response.json();
+        setFriendBuckets(buckets);
+        setSelectedFriend(friend); // 선택된 친구 업데이트
+      } else {
+        alert("친구의 버킷리스트를 불러오는 데 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error fetching friend's bucket list:", error);
+      alert("친구의 버킷리스트를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <>
       {/* 열고 닫는 버튼 */}
@@ -111,9 +145,17 @@ export default function Social() {
                 {friends.map((friend) => (
                   <li
                     key={friend.friend_email}
-                    className="p-2 bg-white bg-opacity-20 rounded-lg my-2"
+                    className="p-2 bg-white bg-opacity-20 rounded-lg my-2 flex justify-between items-center"
                   >
-                    {friend.friend_name} ({friend.friend_email})
+                    <span>
+                      {friend.friend_name} ({friend.friend_email})
+                    </span>
+                    <button
+                      onClick={() => fetchFriendBuckets(friend)}
+                      className="bg-blue-500 text-white px-2 py-1 rounded ml-4"
+                    >
+                      버킷리스트 보기
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -130,21 +172,29 @@ export default function Social() {
                 {friendRequests.map((request) => (
                   <li
                     key={request.request_email}
-                    className="p-2 bg-white bg-opacity-20 rounded-lg my-2"
+                    className="p-2 bg-white bg-opacity-20 rounded-lg my-2 flex justify-between items-center"
                   >
-                    {request.request_name} ({request.request_email}){" "}
-                    <button
-                      onClick={() => handleAcceptRequest(request.request_email)}
-                      className="bg-blue-500 text-white px-2 py-1 rounded ml-4"
-                    >
-                      수락
-                    </button>
-                    <button
-                      onClick={() => handleRefuseRequest(request.request_email)}
-                      className="bg-blue-500 text-white px-2 py-1 rounded ml-4"
-                    >
-                      거절
-                    </button>
+                    <span>
+                      {request.request_name} ({request.request_email})
+                    </span>
+                    <div>
+                      <button
+                        onClick={() =>
+                          handleAcceptRequest(request.request_email)
+                        }
+                        className="bg-green-500 text-white px-2 py-1 rounded ml-4"
+                      >
+                        수락
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleRefuseRequest(request.request_email)
+                        }
+                        className="bg-red-500 text-white px-2 py-1 rounded ml-4"
+                      >
+                        거절
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -170,6 +220,35 @@ export default function Social() {
               </button>
             </div>
           </div>
+
+          {/* 친구의 버킷리스트 */}
+          {selectedFriend && (
+            <div className="p-8">
+              <h2 className="text-white text-xl font-bold">
+                {selectedFriend.friend_name}({selectedFriend.friend_email})님의
+                버킷리스트
+              </h2>
+              {friendBuckets.length === 0 ? (
+                <p className="text-white">버킷리스트가 없습니다.</p>
+              ) : (
+                <ul className="text-white">
+                  {friendBuckets.map((bucket, index) => (
+                    <li
+                      key={index}
+                      className={`p-2 rounded-lg my-2 ${
+                        bucket.isCompleted
+                          ? "bg-green-500"
+                          : "bg-white bg-opacity-20"
+                      }`}
+                    >
+                      {bucket.content}{" "}
+                      {bucket.isCompleted ? "(완료)" : "(미완료)"}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
       )}
     </>
