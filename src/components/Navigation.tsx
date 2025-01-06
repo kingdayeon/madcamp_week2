@@ -6,6 +6,7 @@ const navItems = [
   { path: '/gallery', label: 'Gallery' },
   { path: '/horoscope', label: 'Horoscope 🔮' },
   { path: '/mypage', label: 'Mypage' },
+  { path: '/social', label: 'Social' },
 ];
 
 export default function Navigation() {
