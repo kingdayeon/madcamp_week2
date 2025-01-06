@@ -37,7 +37,7 @@ export interface PlanetStore {
   completedPlanets: Planet[];
   selectedPlanet: Planet | null; // 선택된 행성
   planetPositionsAndScales: { [key: string]: { position: THREE.Vector3; scale: number } };
-  addPlanet: (content: string) => void;
+  addPlanet: (content: string) => Promise<void>;
   setSelectedPlanet: (planet: Planet | null) => void;
   completePlanet: (id: string) => Promise<void>;
   deletePlanet: (id: string) => Promise<void>;
@@ -53,7 +53,6 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
   planetPositionsAndScales: {},
 
   // ✅ 랜덤 행성 추가 함수 (백엔드 저장 포함)
-  // usePlanetStore.ts 수정사항
   addPlanet: async (content) => {
     const position = {
       x: Math.random() * 30 - 15,  // -15 ~ 15 사이
@@ -61,7 +60,27 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       z: Math.random() * 20 - 10   // -10 ~ 10 사이
     };
   
-    const modelPath = `/models/planet${Math.floor(Math.random() * 16) + 1}.glb`;
+    var randomModelIndex = Math.floor(Math.random() * 17) + 1;
+    const save = randomModelIndex
+    var modelPath = "";
+    let isUnique = false;
+
+    while (!isUnique) {
+      modelPath = `/models/planet${randomModelIndex}.glb`;
+      const bucketLists = await getBucketLists(false);
+      const existingModelPaths = bucketLists.map((bucket: BucketList) => bucket.modelPath);
+
+      if (!existingModelPaths.includes(modelPath)) {
+        isUnique = true;
+      } else {
+        randomModelIndex+=1
+        if (randomModelIndex==18) randomModelIndex=1
+        if (randomModelIndex == save) {
+          console.error("All planet models are already used by this user.");
+          throw new Error("Cannot add more planets: all models are already used.");
+        }
+      }
+    }
     
     // 백엔드에 먼저 저장
     const savedBucket = await createBucketList({
@@ -130,7 +149,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
         break;
     }
 
-    const scale = 3 / maxDimension
+    const scale = 4 / maxDimension
 
     const newPlanet: Planet = {
       id: savedBucket._id,

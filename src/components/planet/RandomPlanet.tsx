@@ -27,9 +27,9 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
       );
 
       // 모델의 실제 크기를 고려한 스케일 계산
-      const box = new THREE.Box3().setFromObject(planetRef.current);
-      const size = new THREE.Vector3();
-      box.getSize(size);
+      //const box = new THREE.Box3().setFromObject(planetRef.current);
+      //const size = new THREE.Vector3();
+      //box.getSize(size);
       
       let maxDimension = 1.0
 
@@ -91,7 +91,7 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
           break;
       }
 
-      const scale = 3 / maxDimension;  // 4 대신 1.5 사용
+      const scale = 4 / maxDimension;  // 4 대신 1.5 사용
 
       setPlanetPositionAndScale(id, position, scale);
       // setIsInitialized(true);
