@@ -61,7 +61,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
       z: Math.random() * 20 - 10   // -10 ~ 10 사이
     };
   
-    var modelPath = `/models/planet${Math.floor(Math.random() * 16) + 1}.glb`;
+    const modelPath = `/models/planet${Math.floor(Math.random() * 16) + 1}.glb`;
     
     // 백엔드에 먼저 저장
     const savedBucket = await createBucketList({
@@ -71,7 +71,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
     });
 
     // 스케일 계산 (더 작은 값으로 조정)
-    var maxDimension = 1.0
+    let maxDimension = 1.0
 
     switch (modelPath) {
       case "/models/planet1.glb":

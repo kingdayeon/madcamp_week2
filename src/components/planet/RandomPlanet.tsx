@@ -1,5 +1,5 @@
 import { useGLTF } from '@react-three/drei';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef,  } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ThreeEvent } from '@react-three/fiber';
@@ -15,7 +15,7 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
   const { scene } = useGLTF(modelPath);
   const planetRef = useRef<THREE.Group>(null);
   const { selectedPlanet, setSelectedPlanet, setPlanetPositionAndScale, planetPositionsAndScales } = usePlanetStore();
-  const [isInitialized, setIsInitialized] = useState(false);
+  // const [ setIsInitialized] = useState(false);
   
   // RandomPlanet.tsx 수정
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
       const size = new THREE.Vector3();
       box.getSize(size);
       
-      var maxDimension = 1.0
+      let maxDimension = 1.0
 
       //console.log(modelPath+" "+Math.max(size.x,size.y,size.z))
       switch (modelPath) {
@@ -94,9 +94,9 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
       const scale = 3 / maxDimension;  // 4 대신 1.5 사용
 
       setPlanetPositionAndScale(id, position, scale);
-      setIsInitialized(true);
+      // setIsInitialized(true);
     }
-  }, [scene, id, planetPositionsAndScales, setPlanetPositionAndScale]);
+  }, [scene, id, planetPositionsAndScales, setPlanetPositionAndScale, modelPath]);
 
   useEffect(() => {
     const storedData = planetPositionsAndScales[id];
