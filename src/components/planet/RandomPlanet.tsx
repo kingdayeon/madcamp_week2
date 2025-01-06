@@ -91,7 +91,7 @@ export default function RandomPlanet({ id, content, modelPath }: RandomPlanetPro
           break;
       }
 
-      const scale = 3 / maxDimension;  // 4 대신 1.5 사용
+      const scale = 4 / maxDimension;  // 4 대신 1.5 사용
 
       setPlanetPositionAndScale(id, position, scale);
       // setIsInitialized(true);

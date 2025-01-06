@@ -130,7 +130,7 @@ export const usePlanetStore = create<PlanetStore>((set) => ({
         break;
     }
 
-    const scale = 3 / maxDimension
+    const scale = 4 / maxDimension
 
     const newPlanet: Planet = {
       id: savedBucket._id,
