@@ -78,7 +78,7 @@ const ContainBucketModal = ({ onComplete }: ContainBucketModalProps) => {
               ${isCompleted ? 'bg-green-500 bg-opacity-50' : ''}`}
             disabled={isProcessing || isCompleted}
           >
-            { '삭제하기' }
+            { '다음 생에 🌠' }
           </button>
         </div>
       </div>
