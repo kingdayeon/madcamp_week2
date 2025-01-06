@@ -1,5 +1,5 @@
 // src/components/Navigation.tsx
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 
 const navItems = [
   { path: '/home', label: 'My Space' },
@@ -10,12 +10,9 @@ const navItems = [
 
 export default function Navigation() {
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.clear(); // localStorage 초기화
-    navigate('/'); // 루트 경로로 리다이렉트
-  };
+
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-4">
@@ -40,13 +37,6 @@ export default function Navigation() {
           );
         })}
 
-        {/* 로그아웃 버튼 */}
-        <button
-          onClick={handleLogout}
-          className="px-6 py-2 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition-colors"
-        >
-          Logout
-        </button>
       </div>
     </nav>
   );
