@@ -64,13 +64,23 @@ export default function Social() {
       await acceptFriendRequest(requesterEmail);
       alert("친구 요청을 수락했습니다!");
 
+      // 친구 요청 목록에서 요청 데이터 가져오기
+      const acceptedRequest = friendRequests.find(
+        (req) => req.request_email === requesterEmail
+      );
+
+      if (!acceptedRequest) return; // 요청이 없으면 함수 종료
+
       // 친구 목록과 요청 목록 업데이트
       setFriendRequests((prev) =>
         prev.filter((req) => req.request_email !== requesterEmail)
       );
       setFriends((prev) => [
         ...prev,
-        { friend_name: "친구 이름", friend_email: requesterEmail },
+        {
+          friend_name: acceptedRequest.request_name, // 요청자의 이름 사용
+          friend_email: acceptedRequest.request_email, // 요청자의 이메일 사용
+        },
       ]);
     } catch (error) {
       alert("친구 요청 수락에 실패했습니다.");
@@ -235,11 +245,10 @@ export default function Social() {
                   {friendBuckets.map((bucket, index) => (
                     <li
                       key={index}
-                      className={`p-2 rounded-lg my-2 ${
-                        bucket.isCompleted
+                      className={`p-2 rounded-lg my-2 ${bucket.isCompleted
                           ? "bg-green-500"
                           : "bg-white bg-opacity-20"
-                      }`}
+                        }`}
                     >
                       {bucket.content}{" "}
                       {bucket.isCompleted ? "(완료)" : "(미완료)"}
