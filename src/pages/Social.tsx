@@ -137,7 +137,7 @@ export default function Social() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 overflow-y-auto">
+    <div className="fixed inset-0 bg-black/70">
       <div className="min-h-full pt-20 pb-10 px-8">
         <div className="flex gap-8 h-[calc(100vh-120px)]">
           {/* 왼쪽 패널: 친구 목록 */}
@@ -154,36 +154,36 @@ export default function Social() {
                   onClick={() => handleFriendClick(friend)}
                   className={`mb-4 p-4 bg-white ${
                     selectedFriend?.friend_email === friend.friend_email
-                      ? "bg-opacity-50 text-black"
-                      : "bg-opacity-20 text-white"
+                      ? "bg-opacity-50 text-black text-lg"
+                      : "bg-opacity-20 text-white text-lg"
                   } rounded-[20px] cursor-pointer transition-all`}
                 >
                   {friend.friend_name} 👽
                 </div>
               ))}
             </div>
-
+  
             {/* 친구 추가 버튼 */}
             <div className="p-4 flex justify-center">
-            <button
-  onClick={() => {
-    setShowAddFriend(true);
-    setSelectedFriend(null); // 친구 추가 화면 열 때 선택된 친구 초기화
-    setFriendBuckets([]); 
-  }}
-  className="text-white hover:text-gray-300 transition-colors"
->
-  친구 추가
-</button>
+              <button
+                onClick={() => {
+                  setShowAddFriend(true);
+                  setSelectedFriend(null);
+                  setFriendBuckets([]);
+                }}
+                className="text-white hover:text-gray-300 transition-colors"
+              >
+                친구 추가
+              </button>
             </div>
           </div>
-
+  
           {/* 오른쪽 패널: 버킷리스트 또는 친구 추가 */}
-          <div className="flex-1 mx-4">
+          <div className="flex-1 mx-4 h-full">
             {showAddFriend ? (
-              <div className="space-y-6">
+              <div className="h-full overflow-y-auto scrollbar-hide">
                 {/* 친구 추가 섹션 */}
-                <div className="bg-white bg-opacity-20 rounded-[20px] p-6">
+                <div className=" p-6 mb-6">
                   <h2 className="text-white text-xl mb-4">친구 추가</h2>
                   <div className="flex gap-4">
                     <input
@@ -191,39 +191,39 @@ export default function Social() {
                       value={targetEmail}
                       onChange={(e) => setTargetEmail(e.target.value)}
                       placeholder="이메일을 입력하세요"
-                      className="flex-1 bg-transparent border border-white rounded-[20px] p-2 text-white placeholder-white"
+                      className="flex-1 bg-transparent border border-white rounded-[12px] p-3 text-white placeholder-white"
                     />
                     <button
                       onClick={handleSendRequest}
-                      className="bg-white bg-opacity-50 text-black px-6 py-2 rounded-[20px]"
+                      className="bg-white bg-opacity-50 text-black px-6 py-2 rounded-[12px]"
                     >
                       Send
                     </button>
                   </div>
                 </div>
-
+  
                 {/* 받은 요청 섹션 */}
-                <div className="bg-white bg-opacity-20 rounded-[20px] p-6">
+                <div className=" p-6">
                   <h2 className="text-white text-xl mb-4">받은 요청</h2>
-                  <div className="space-y-4 overflow-y-auto scrollbar-hide">
+                  <div className="space-y-4">
                     {friendRequests.map((request) => (
                       <div
                         key={request.request_email}
                         className="bg-white bg-opacity-20 rounded-[20px] p-4 flex justify-between items-center"
                       >
-                        <span className="text-white">
+                        <span className="text-white text-lg">
                           {request.request_name} 👽
                         </span>
                         <div className="space-x-2">
                           <button
                             onClick={() => handleAcceptRequest(request.request_email)}
-                            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[20px]"
+                            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[12px]"
                           >
                             수락
                           </button>
                           <button
                             onClick={() => handleRefuseRequest(request.request_email)}
-                            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[20px]"
+                            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[12px]"
                           >
                             거절
                           </button>
@@ -234,22 +234,24 @@ export default function Social() {
                 </div>
               </div>
             ) : selectedFriend && (
-              <div className=" p-6">
+              <div className="h-full flex flex-col">
                 <h2 className="text-white text-xl mb-4 inline-flex items-center">
                   {selectedFriend.friend_name}님의 버킷리스트
                 </h2>
-                <div className="space-y-4 overflow-y-auto scrollbar-hide">
-                  {friendBuckets.map((bucket, index) => (
-                    <div
-                      key={index}
-                      className="bg-white bg-opacity-20 rounded-[20px] p-4 flex justify-between items-center"
-                    >
-                      <span className="text-white">{bucket.content}</span>
-                      <span className="text-white">
-                        {bucket.isCompleted ? "달성 ✨" : "진행중"}
-                      </span>
-                    </div>
-                  ))}
+                <div className="flex-1 overflow-y-auto scrollbar-hide">
+                  <div className="space-y-4">
+                    {friendBuckets.map((bucket, index) => (
+                      <div
+                        key={index}
+                        className="bg-white bg-opacity-20 rounded-[20px] p-4 flex justify-between items-center"
+                      >
+                        <span className="text-white">{bucket.content}</span>
+                        <span className="text-white">
+                          {bucket.isCompleted ? "달성 ✨" : "진행중"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
