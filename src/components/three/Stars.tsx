@@ -63,6 +63,7 @@ export function Stars() {
     if (ref.current) {
       ref.current.rotation.x += delta * 0.0001  // x축 회전
       ref.current.rotation.y += delta * 0.0005  // y축 회전
+      state=state
     }
   })
 
