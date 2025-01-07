@@ -22,17 +22,16 @@ interface BucketList {
   isCompleted: boolean;
 }
 
+
 export default function Social() {
-  const [isVisible, setIsVisible] = useState(true); // 창 가시성 상태
   const [friends, setFriends] = useState<Friend[]>([]);
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
   const [targetEmail, setTargetEmail] = useState("");
-  const [friendBuckets, setFriendBuckets] = useState<BucketList[]>([]); // 친구의 버킷리스트
-  const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null); // 선택된 친구
+  const [friendBuckets, setFriendBuckets] = useState<BucketList[]>([]);
+  const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
+  const [showAddFriend, setShowAddFriend] = useState(false);
 
   useEffect(() => {
-    if (!isVisible) return; // 창이 열렸을 때만 데이터를 가져옴
-
     const fetchData = async () => {
       try {
         const [friendsData, requestsData] = await Promise.all([
@@ -47,13 +46,26 @@ export default function Social() {
     };
 
     fetchData();
-  }, [isVisible]);
+  }, []);
+
+  const handleFriendClick = (friend: Friend) => {
+    // 친구 클릭 시 친구 추가 화면 닫기
+    setShowAddFriend(false);
+    
+    if (selectedFriend?.friend_email === friend.friend_email) {
+      setSelectedFriend(null);
+      setFriendBuckets([]);
+    } else {
+      fetchFriendBuckets(friend);
+    }
+  };
+  
 
   const handleSendRequest = async () => {
     try {
       await sendFriendRequest(targetEmail);
       alert("친구 요청이 성공적으로 전송되었습니다!");
-      setTargetEmail(""); // 입력 필드 초기화
+      setTargetEmail("");
     } catch (error) {
       alert("친구 요청 전송에 실패했습니다.");
     }
@@ -63,23 +75,21 @@ export default function Social() {
     try {
       await acceptFriendRequest(requesterEmail);
       alert("친구 요청을 수락했습니다!");
-
-      // 친구 요청 목록에서 요청 데이터 가져오기
+      
       const acceptedRequest = friendRequests.find(
         (req) => req.request_email === requesterEmail
       );
 
-      if (!acceptedRequest) return; // 요청이 없으면 함수 종료
+      if (!acceptedRequest) return;
 
-      // 친구 목록과 요청 목록 업데이트
       setFriendRequests((prev) =>
         prev.filter((req) => req.request_email !== requesterEmail)
       );
       setFriends((prev) => [
         ...prev,
         {
-          friend_name: acceptedRequest.request_name, // 요청자의 이름 사용
-          friend_email: acceptedRequest.request_email, // 요청자의 이메일 사용
+          friend_name: acceptedRequest.request_name,
+          friend_email: acceptedRequest.request_email,
         },
       ]);
     } catch (error) {
@@ -91,8 +101,6 @@ export default function Social() {
     try {
       await refuseFriendRequest(requesterEmail);
       alert("친구 요청을 거절했습니다!");
-
-      // 친구 목록과 요청 목록 업데이트
       setFriendRequests((prev) =>
         prev.filter((req) => req.request_email !== requesterEmail)
       );
@@ -118,7 +126,7 @@ export default function Social() {
       if (response.ok) {
         const buckets = await response.json();
         setFriendBuckets(buckets);
-        setSelectedFriend(friend); // 선택된 친구 업데이트
+        setSelectedFriend(friend);
       } else {
         alert("친구의 버킷리스트를 불러오는 데 실패했습니다.");
       }
@@ -129,137 +137,125 @@ export default function Social() {
   };
 
   return (
-    <>
-      {/* 열고 닫는 버튼 */}
-      <button
-        onClick={() => setIsVisible((prev) => !prev)}
-        className="fixed bottom-8 right-8 bg-blue-500 text-white px-4 py-2 rounded z-50 shadow-md"
-      >
-        {isVisible ? "닫기" : "친구 관리"}
-      </button>
+    <div className="fixed inset-0 bg-black/70 overflow-y-auto">
+      <div className="min-h-full pt-20 pb-10 px-8">
+        <div className="flex gap-8 h-[calc(100vh-120px)]">
+          {/* 왼쪽 패널: 친구 목록 */}
+          <div className="w-1/3 bg-white bg-opacity-20 rounded-[20px] flex flex-col mx-4">
+            <h2 className="text-white text-xl p-6 inline-flex items-center">
+              친구 목록
+            </h2>
+            
+            {/* 친구 목록 (스크롤 가능) */}
+            <div className="flex-1 overflow-y-auto scrollbar-hide px-4">
+              {friends.map((friend) => (
+                <div
+                  key={friend.friend_email}
+                  onClick={() => handleFriendClick(friend)}
+                  className={`mb-4 p-4 bg-white ${
+                    selectedFriend?.friend_email === friend.friend_email
+                      ? "bg-opacity-50 text-black"
+                      : "bg-opacity-20 text-white"
+                  } rounded-[20px] cursor-pointer transition-all`}
+                >
+                  {friend.friend_name} 👽
+                </div>
+              ))}
+            </div>
 
-      {/* 친구 관리 창 */}
-      {isVisible && (
-        <div className="fixed inset-0 bg-black/70 z-40 overflow-y-auto">
-          <div className="p-8">
-            <h1 className="text-white text-2xl font-medium">친구 관리</h1>
+            {/* 친구 추가 버튼 */}
+            <div className="p-4 flex justify-center">
+            <button
+  onClick={() => {
+    setShowAddFriend(true);
+    setSelectedFriend(null); // 친구 추가 화면 열 때 선택된 친구 초기화
+    setFriendBuckets([]); 
+  }}
+  className="text-white hover:text-gray-300 transition-colors"
+>
+  친구 추가
+</button>
+            </div>
           </div>
 
-          {/* 친구 목록 */}
-          <div className="p-8">
-            <h2 className="text-white text-xl font-bold">친구 목록</h2>
-            {friends.length === 0 ? (
-              <p className="text-white">현재 친구가 없습니다.</p>
-            ) : (
-              <ul className="text-white">
-                {friends.map((friend) => (
-                  <li
-                    key={friend.friend_email}
-                    className="p-2 bg-white bg-opacity-20 rounded-lg my-2 flex justify-between items-center"
-                  >
-                    <span>
-                      {friend.friend_name} ({friend.friend_email})
-                    </span>
+          {/* 오른쪽 패널: 버킷리스트 또는 친구 추가 */}
+          <div className="flex-1 mx-4">
+            {showAddFriend ? (
+              <div className="space-y-6">
+                {/* 친구 추가 섹션 */}
+                <div className="bg-white bg-opacity-20 rounded-[20px] p-6">
+                  <h2 className="text-white text-xl mb-4">친구 추가</h2>
+                  <div className="flex gap-4">
+                    <input
+                      type="email"
+                      value={targetEmail}
+                      onChange={(e) => setTargetEmail(e.target.value)}
+                      placeholder="이메일을 입력하세요"
+                      className="flex-1 bg-transparent border border-white rounded-[20px] p-2 text-white placeholder-white"
+                    />
                     <button
-                      onClick={() => fetchFriendBuckets(friend)}
-                      className="bg-blue-500 text-white px-2 py-1 rounded ml-4"
+                      onClick={handleSendRequest}
+                      className="bg-white bg-opacity-50 text-black px-6 py-2 rounded-[20px]"
                     >
-                      버킷리스트 보기
+                      Send
                     </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+                  </div>
+                </div>
 
-          {/* 친구 요청 목록 */}
-          <div className="p-8">
-            <h2 className="text-white text-xl font-bold">받은 친구 요청</h2>
-            {friendRequests.length === 0 ? (
-              <p className="text-white">받은 친구 요청이 없습니다.</p>
-            ) : (
-              <ul className="text-white">
-                {friendRequests.map((request) => (
-                  <li
-                    key={request.request_email}
-                    className="p-2 bg-white bg-opacity-20 rounded-lg my-2 flex justify-between items-center"
-                  >
-                    <span>
-                      {request.request_name} ({request.request_email})
-                    </span>
-                    <div>
-                      <button
-                        onClick={() =>
-                          handleAcceptRequest(request.request_email)
-                        }
-                        className="bg-green-500 text-white px-2 py-1 rounded ml-4"
+                {/* 받은 요청 섹션 */}
+                <div className="bg-white bg-opacity-20 rounded-[20px] p-6">
+                  <h2 className="text-white text-xl mb-4">받은 요청</h2>
+                  <div className="space-y-4 overflow-y-auto scrollbar-hide">
+                    {friendRequests.map((request) => (
+                      <div
+                        key={request.request_email}
+                        className="bg-white bg-opacity-20 rounded-[20px] p-4 flex justify-between items-center"
                       >
-                        수락
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleRefuseRequest(request.request_email)
-                        }
-                        className="bg-red-500 text-white px-2 py-1 rounded ml-4"
-                      >
-                        거절
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* 친구 요청 보내기 */}
-          <div className="p-8">
-            <h2 className="text-white text-xl font-bold">친구 요청 보내기</h2>
-            <div className="flex gap-4 items-center">
-              <input
-                type="email"
-                value={targetEmail}
-                onChange={(e) => setTargetEmail(e.target.value)}
-                placeholder="친구 이메일 입력"
-                className="p-2 rounded bg-transparent border border-white text-white placeholder-white w-full"
-              />
-              <button
-                onClick={handleSendRequest}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                요청 보내기
-              </button>
-            </div>
-          </div>
-
-          {/* 친구의 버킷리스트 */}
-          {selectedFriend && (
-            <div className="p-8">
-              <h2 className="text-white text-xl font-bold">
-                {selectedFriend.friend_name}({selectedFriend.friend_email})님의
-                버킷리스트
-              </h2>
-              {friendBuckets.length === 0 ? (
-                <p className="text-white">버킷리스트가 없습니다.</p>
-              ) : (
-                <ul className="text-white">
+                        <span className="text-white">
+                          {request.request_name} 👽
+                        </span>
+                        <div className="space-x-2">
+                          <button
+                            onClick={() => handleAcceptRequest(request.request_email)}
+                            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[20px]"
+                          >
+                            수락
+                          </button>
+                          <button
+                            onClick={() => handleRefuseRequest(request.request_email)}
+                            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[20px]"
+                          >
+                            거절
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : selectedFriend && (
+              <div className=" p-6">
+                <h2 className="text-white text-xl mb-4 inline-flex items-center">
+                  {selectedFriend.friend_name}님의 버킷리스트
+                </h2>
+                <div className="space-y-4 overflow-y-auto scrollbar-hide">
                   {friendBuckets.map((bucket, index) => (
-                    <li
+                    <div
                       key={index}
-                      className={`p-2 rounded-lg my-2 ${bucket.isCompleted
-                          ? "bg-green-500"
-                          : "bg-white bg-opacity-20"
-                        }`}
+                      className="bg-white bg-opacity-20 rounded-[20px] p-4 flex justify-between items-center"
                     >
-                      {bucket.content}{" "}
-                      {bucket.isCompleted ? "(완료)" : "(미완료)"}
-                    </li>
+                      <span className="text-white">{bucket.content}</span>
+                      <span className="text-white">
+                        {bucket.isCompleted ? "달성 ✨" : "진행중"}
+                      </span>
+                    </div>
                   ))}
-                </ul>
-              )}
-            </div>
-          )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }
