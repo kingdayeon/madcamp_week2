@@ -11,6 +11,7 @@ import MySpace from './pages/MySpace';
 import Gallery from './pages/Gallery';
 import Horoscope from './pages/Horoscope/index';
 import MyPage from './pages/Mypage';
+import Social from './pages/Social';
 import HoroscopeDetail from './pages/Horoscope/detail';
 import RandomPlanet from './components/planet/RandomPlanet';
 import { usePlanetStore } from './store/usePlanetStore';
@@ -87,6 +88,7 @@ export default function App() {
                     <Route path="/horoscope" element={<Horoscope />} />
                     <Route path="/horoscope/:sign" element={<HoroscopeDetail />} />
                     <Route path="/mypage" element={<MyPage />} />
+                    <Route path='/social' element={<Social />}/>
                   </Routes>
                 </div>
               </div>

@@ -5,6 +5,7 @@ const navItems = [
   { path: '/home', label: 'My Space' },
   { path: '/gallery', label: 'Gallery' },
   { path: '/horoscope', label: 'Horoscope 🔮' },
+  { path: '/social', label: 'Friend' },
   { path: '/mypage', label: 'Mypage' },
 ];
 
