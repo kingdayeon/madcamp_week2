@@ -1,13 +1,6 @@
 // src/pages/Gallery.tsx
-import { useState, useEffect } from 'react';
-
-interface APODImage {
-  date: string;
-  explanation: string;
-  title: string;
-  url: string;
-  media_type: string;
-}
+import { useState, useEffect } from "react";
+import { APODImage, getRandomImages } from "../api/nasa";
 
 export default function Gallery() {
   const [images, setImages] = useState<APODImage[]>([]);
@@ -15,17 +8,34 @@ export default function Gallery() {
 
   // useEffect(() => {
   //   const fetchImages = async () => {
+  //     setLoading(true); // 로딩 시작
   //     try {
-  //       const response = await fetch(
-  //         `https://api.nasa.gov/planetary/apod?api_key=${import.meta.env.VITE_NASA_API_KEY}&count=9`
-  //       );
-  //       const data = await response.json();
-  //       const imageOnly = data.filter((item: APODImage) => item.media_type === 'image');
-  //       setImages(imageOnly);
+  //       const collectedImages: APODImage[] = [];
+  //       while (collectedImages.length < 9) {
+  //         const response = await fetch(
+  //           `https://api.nasa.gov/planetary/apod?api_key=${
+  //             import.meta.env.VITE_NASA_API_KEY
+  //           }&count=9`
+  //         );
+  //         const data: APODImage[] = await response.json();
+
+  //         // 중복되지 않는 새로운 이미지만 추가
+  //         const newImages = data.filter(
+  //           (item: APODImage) =>
+  //             item.media_type === "image" &&
+  //             !collectedImages.some((img) => img.date === item.date)
+  //         );
+  //         collectedImages.push(
+  //           ...newImages.slice(0, 9 - collectedImages.length)
+  //         );
+  //       }
+
+  //       // 모든 이미지가 수집된 후에 상태 업데이트
+  //       setImages(collectedImages);
   //     } catch (error) {
-  //       console.error('Error fetching APOD:', error);
+  //       console.error("Error fetching APOD:", error);
   //     } finally {
-  //       setLoading(false);
+  //       setLoading(false); // 로딩 끝
   //     }
   //   };
 
@@ -34,33 +44,17 @@ export default function Gallery() {
 
   useEffect(() => {
     const fetchImages = async () => {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
       try {
-        const collectedImages: APODImage[] = [];
-        while (collectedImages.length < 9) {
-          const response = await fetch(
-            `https://api.nasa.gov/planetary/apod?api_key=${import.meta.env.VITE_NASA_API_KEY}&count=9`
-          );
-          const data: APODImage[] = await response.json();
-  
-          // 중복되지 않는 새로운 이미지만 추가
-          const newImages = data.filter(
-            (item: APODImage) =>
-              item.media_type === "image" &&
-              !collectedImages.some((img) => img.date === item.date)
-          );
-          collectedImages.push(...newImages.slice(0, 9 - collectedImages.length));
-        }
-  
-        // 모든 이미지가 수집된 후에 상태 업데이트
-        setImages(collectedImages);
+        const data = await getRandomImages();
+        setImages(data);
       } catch (error) {
         console.error("Error fetching APOD:", error);
       } finally {
-        setLoading(false); // 로딩 끝
+        setLoading(false);
       }
     };
-  
+
     fetchImages();
   }, []);
 
@@ -89,11 +83,15 @@ export default function Gallery() {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-center rounded-lg">
-                  <h3 className="text-white text-lg font-medium mb-4">{image.title}</h3>
+                  <h3 className="text-white text-lg font-medium mb-4">
+                    {image.title}
+                  </h3>
                   <p className="text-white/90 text-sm overflow-y-auto max-h-40 font-light">
                     {image.explanation}
                   </p>
-                  <span className="text-white/60 text-xs mt-4 font-light">{image.date}</span>
+                  <span className="text-white/60 text-xs mt-4 font-light">
+                    {image.date}
+                  </span>
                 </div>
               </div>
             ))}
