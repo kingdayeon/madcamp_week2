@@ -113,12 +113,12 @@ export default function Social() {
   const handleDeleteFriend = async (friendEmail: string) => {
     try {
       await deleteFriend(friendEmail);
-      alert("친구를 손절했습니다!");
+      alert("친구를 추방했습니다!");
       setFriends((prev) =>
         prev.filter((req) => req.friend_email !== friendEmail)
       );
     } catch (error) {
-      alert("친구 손절에 실패했습니다.");
+      alert("친구 추방에 실패했습니다.");
     }
   };
 
@@ -174,9 +174,9 @@ export default function Social() {
                   </span>
                   <button
                     onClick={() => handleDeleteFriend(friend.friend_email)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-[12px] hover:bg-red-600 transition-all"
+                    className="bg-black-500 text-white px-4 py-2 rounded-[12px] hover:bg-black-600 transition-all"
                   >
-                    손절
+                    추방
                   </button>
                 </div>
               ))}
@@ -216,7 +216,7 @@ export default function Social() {
                       onClick={handleSendRequest}
                       className="bg-white bg-opacity-50 text-black px-6 py-2 rounded-[12px]"
                     >
-                      Send
+                      요청
                     </button>
                   </div>
                 </div>
