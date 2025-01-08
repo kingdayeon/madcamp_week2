@@ -5,6 +5,7 @@ import {
   sendFriendRequest,
   acceptFriendRequest,
   refuseFriendRequest,
+  deleteFriend,
 } from "../api/social";
 
 interface Friend {
@@ -51,7 +52,7 @@ export default function Social() {
   const handleFriendClick = (friend: Friend) => {
     // 친구 클릭 시 친구 추가 화면 닫기
     setShowAddFriend(false);
-    
+
     if (selectedFriend?.friend_email === friend.friend_email) {
       setSelectedFriend(null);
       setFriendBuckets([]);
@@ -59,7 +60,7 @@ export default function Social() {
       fetchFriendBuckets(friend);
     }
   };
-  
+
 
   const handleSendRequest = async () => {
     try {
@@ -75,7 +76,7 @@ export default function Social() {
     try {
       await acceptFriendRequest(requesterEmail);
       alert("친구 요청을 수락했습니다!");
-      
+
       const acceptedRequest = friendRequests.find(
         (req) => req.request_email === requesterEmail
       );
@@ -106,6 +107,18 @@ export default function Social() {
       );
     } catch (error) {
       alert("친구 요청 거절에 실패했습니다.");
+    }
+  };
+
+  const handleDeleteFriend = async (friendEmail: string) => {
+    try {
+      await deleteFriend(friendEmail);
+      alert("친구를 손절했습니다!");
+      setFriends((prev) =>
+        prev.filter((req) => req.friend_email !== friendEmail)
+      );
+    } catch (error) {
+      alert("친구 손절에 실패했습니다.");
     }
   };
 
@@ -145,24 +158,30 @@ export default function Social() {
             <h2 className="text-white text-xl p-6 inline-flex items-center">
               친구 목록
             </h2>
-            
+
             {/* 친구 목록 (스크롤 가능) */}
             <div className="flex-1 overflow-y-auto scrollbar-hide px-4">
               {friends.map((friend) => (
                 <div
                   key={friend.friend_email}
-                  onClick={() => handleFriendClick(friend)}
-                  className={`mb-4 p-4 bg-white ${
-                    selectedFriend?.friend_email === friend.friend_email
+                  className={`mb-4 p-4 bg-white ${selectedFriend?.friend_email === friend.friend_email
                       ? "bg-opacity-50 text-black text-lg"
                       : "bg-opacity-20 text-white text-lg"
-                  } rounded-[20px] cursor-pointer transition-all`}
+                    } rounded-[20px] cursor-pointer transition-all flex justify-between items-center`}
                 >
-                  {friend.friend_name} 👽
+                  <span onClick={() => handleFriendClick(friend)} className="flex-1 cursor-pointer">
+                    {friend.friend_name} 👽
+                  </span>
+                  <button
+                    onClick={() => handleDeleteFriend(friend.friend_email)}
+                    className="bg-red-500 text-white px-4 py-2 rounded-[12px] hover:bg-red-600 transition-all"
+                  >
+                    손절
+                  </button>
                 </div>
               ))}
             </div>
-  
+
             {/* 친구 추가 버튼 */}
             <div className="p-4 flex justify-center">
               <button
@@ -177,7 +196,7 @@ export default function Social() {
               </button>
             </div>
           </div>
-  
+
           {/* 오른쪽 패널: 버킷리스트 또는 친구 추가 */}
           <div className="flex-1 mx-4 h-full">
             {showAddFriend ? (
@@ -201,7 +220,7 @@ export default function Social() {
                     </button>
                   </div>
                 </div>
-  
+
                 {/* 받은 요청 섹션 */}
                 <div className=" p-6">
                   <h2 className="text-white text-xl mb-4">받은 요청</h2>

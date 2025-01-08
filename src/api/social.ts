@@ -120,3 +120,28 @@ export const refuseFriendRequest = async (requesterEmail: string) => {
         throw error;
     }
 };
+
+export const deleteFriend = async (friendEmail: string) => {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('No token found');
+
+    try {
+        const response = await fetch(`${API_URL}/api/users/me/deleteFriend`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ friendEmail }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to refuse friend request");
+        }
+
+        return await response.json(); // 성공 메시지 반환
+    } catch (error) {
+        console.error("Error refusing friend request:", error);
+        throw error;
+    }
+};
