@@ -1,27 +1,26 @@
-
-import { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import Navigation from './components/Navigation';
-import { Stars } from './components/three/Stars';
-import Landing from './pages/Landing';
-import MySpace from './pages/MySpace';
-import Gallery from './pages/Gallery';
-import Horoscope from './pages/Horoscope/index';
-import MyPage from './pages/Mypage';
-import Social from './pages/Social';
-import HoroscopeDetail from './pages/Horoscope/detail';
-import RandomPlanet from './components/planet/RandomPlanet';
-import { usePlanetStore } from './store/usePlanetStore';
-import ContainBucketModal from './components/planet/ConatainBucketModal';
-import { useState } from 'react';
-import ShootingStars from './components/Shootingstars';
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import Navigation from "./components/Navigation";
+import { Stars } from "./components/three/Stars";
+import Landing from "./pages/Landing";
+import MySpace from "./pages/MySpace";
+import Gallery from "./pages/Gallery";
+import Horoscope from "./pages/Horoscope/index";
+import MyPage from "./pages/Mypage";
+import Social from "./pages/Social";
+import HoroscopeDetail from "./pages/Horoscope/detail";
+import RandomPlanet from "./components/planet/RandomPlanet";
+import { usePlanetStore } from "./store/usePlanetStore";
+import ContainBucketModal from "./components/planet/ConatainBucketModal";
+import { useState } from "react";
+import ShootingStars from "./components/Shootingstars";
 
 export default function App() {
   const location = useLocation();
-  const isMySpace = location.pathname === '/home';
+  const isMySpace = location.pathname === "/home";
 
   // 별똥별 트리거 상태 추가
   const [showShootingStars, setShowShootingStars] = useState(false);
@@ -31,13 +30,13 @@ export default function App() {
 
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
-      if (location.pathname === '/home' && !event.ctrlKey) {
+      if (location.pathname === "/home" && !event.ctrlKey) {
         event.preventDefault();
       }
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
   }, [location]);
 
   return (
@@ -55,13 +54,18 @@ export default function App() {
                   fov: 60,
                 }}
                 style={{
-                  background: '#070614',
-                  position: 'fixed',
+                  background: "#070614",
+                  position: "fixed",
                   zIndex: 0,
                 }}
               >
                 <EffectComposer>
-                  <Bloom intensity={1} luminanceThreshold={0} luminanceSmoothing={0.9} kernelSize={4} />
+                  <Bloom
+                    intensity={1}
+                    luminanceThreshold={0}
+                    luminanceSmoothing={0.9}
+                    kernelSize={4}
+                  />
                 </EffectComposer>
                 <ambientLight intensity={0.5} />
                 <Stars />
@@ -71,24 +75,33 @@ export default function App() {
                 />
                 {isMySpace && <OrbitControls makeDefault />}
                 // App.tsx 수정
-{planets.map((planet) => (
-  <RandomPlanet 
-    key={`planet-${planet.id}`}  // 고유한 key 제공
-    id={planet.id} 
-    content={planet.content} 
-    modelPath={planet.modelPath} 
-  />
-))}
+                {planets.map((planet) => (
+                  <RandomPlanet
+                    key={`planet-${planet.id}`} // 고유한 key 제공
+                    id={planet.id}
+                    content={planet.content}
+                    modelPath={planet.modelPath}
+                  />
+                ))}
               </Canvas>
-              <div className="relative w-full h-full" style={{ zIndex: 1, pointerEvents: 'none' }}>
-                <div style={{ pointerEvents: 'auto' }}>
+              <div
+                className="relative w-full h-full"
+                style={{ zIndex: 1, pointerEvents: "none" }}
+              >
+                <div style={{ pointerEvents: "auto" }}>
                   <Routes>
-                    <Route path="/home" element={<MySpace addPlanet={addPlanet} />} />
+                    <Route
+                      path="/home"
+                      element={<MySpace addPlanet={addPlanet} />}
+                    />
                     <Route path="/gallery" element={<Gallery />} />
                     <Route path="/horoscope" element={<Horoscope />} />
-                    <Route path="/horoscope/:sign" element={<HoroscopeDetail />} />
+                    <Route
+                      path="/horoscope/:sign"
+                      element={<HoroscopeDetail />}
+                    />
                     <Route path="/mypage" element={<MyPage />} />
-                    <Route path='/social' element={<Social />}/>
+                    <Route path="/social" element={<Social />} />
                   </Routes>
                 </div>
               </div>
