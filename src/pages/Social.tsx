@@ -23,7 +23,6 @@ interface BucketList {
   isCompleted: boolean;
 }
 
-
 export default function Social() {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
@@ -60,7 +59,6 @@ export default function Social() {
       fetchFriendBuckets(friend);
     }
   };
-
 
   const handleSendRequest = async () => {
     try {
@@ -117,6 +115,11 @@ export default function Social() {
       setFriends((prev) =>
         prev.filter((req) => req.friend_email !== friendEmail)
       );
+      // 추방된 친구의 버킷리스트가 보여지고 있었다면 초기화
+      if (selectedFriend?.friend_email === friendEmail) {
+        setSelectedFriend(null);
+        setFriendBuckets([]);
+      }
     } catch (error) {
       alert("친구 추방에 실패했습니다.");
     }
@@ -164,12 +167,16 @@ export default function Social() {
               {friends.map((friend) => (
                 <div
                   key={friend.friend_email}
-                  className={`mb-4 p-4 bg-white ${selectedFriend?.friend_email === friend.friend_email
+                  className={`mb-4 p-4 bg-white ${
+                    selectedFriend?.friend_email === friend.friend_email
                       ? "bg-opacity-50 text-black text-lg"
                       : "bg-opacity-20 text-white text-lg"
-                    } rounded-[20px] cursor-pointer transition-all flex justify-between items-center`}
+                  } rounded-[20px] cursor-pointer transition-all flex justify-between items-center`}
                 >
-                  <span onClick={() => handleFriendClick(friend)} className="flex-1 cursor-pointer">
+                  <span
+                    onClick={() => handleFriendClick(friend)}
+                    className="flex-1 cursor-pointer"
+                  >
                     {friend.friend_name} 👽
                   </span>
                   <button
@@ -235,13 +242,17 @@ export default function Social() {
                         </span>
                         <div className="space-x-2">
                           <button
-                            onClick={() => handleAcceptRequest(request.request_email)}
+                            onClick={() =>
+                              handleAcceptRequest(request.request_email)
+                            }
                             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[12px]"
                           >
                             수락
                           </button>
                           <button
-                            onClick={() => handleRefuseRequest(request.request_email)}
+                            onClick={() =>
+                              handleRefuseRequest(request.request_email)
+                            }
                             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-[12px]"
                           >
                             거절
@@ -252,27 +263,29 @@ export default function Social() {
                   </div>
                 </div>
               </div>
-            ) : selectedFriend && (
-              <div className="h-full flex flex-col">
-                <h2 className="text-white text-xl mb-4 inline-flex items-center">
-                  {selectedFriend.friend_name}님의 버킷리스트
-                </h2>
-                <div className="flex-1 overflow-y-auto scrollbar-hide">
-                  <div className="space-y-4">
-                    {friendBuckets.map((bucket, index) => (
-                      <div
-                        key={index}
-                        className="bg-white bg-opacity-20 rounded-[20px] p-4 flex justify-between items-center"
-                      >
-                        <span className="text-white">{bucket.content}</span>
-                        <span className="text-white">
-                          {bucket.isCompleted ? "달성 ✨" : "진행중"}
-                        </span>
-                      </div>
-                    ))}
+            ) : (
+              selectedFriend && (
+                <div className="h-full flex flex-col">
+                  <h2 className="text-white text-xl mb-4 inline-flex items-center">
+                    {selectedFriend.friend_name}님의 버킷리스트
+                  </h2>
+                  <div className="flex-1 overflow-y-auto scrollbar-hide">
+                    <div className="space-y-4">
+                      {friendBuckets.map((bucket, index) => (
+                        <div
+                          key={index}
+                          className="bg-white bg-opacity-20 rounded-[20px] p-4 flex justify-between items-center"
+                        >
+                          <span className="text-white">{bucket.content}</span>
+                          <span className="text-white">
+                            {bucket.isCompleted ? "달성 ✨" : "진행중"}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )
             )}
           </div>
         </div>
