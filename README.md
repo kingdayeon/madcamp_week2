@@ -36,7 +36,8 @@
 
 ---
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/e86b49dd-f646-49a6-bd29-419ddad65538/image.png)
+![image (2)](https://github.com/user-attachments/assets/e0e551e6-08a3-4e64-b126-0d46af39a636)
+
 
 - **협업툴 :** Github
 - **FE :** React + TypeScript
@@ -80,20 +81,20 @@
 ---
 
 **DB 구조**
+![image (3)](https://github.com/user-attachments/assets/c6633e77-a299-4c17-b3ab-ab7c5b83be31)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/0f72e23b-e891-444b-8999-47a3f761e029/image.png)
+
 
 **타입 정의**
+![image (4)](https://github.com/user-attachments/assets/9b8d0ce0-645c-4bca-ad5d-b7c9260329ac)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/1771459f-6f83-4cba-80de-56aa5dba99ba/image.png)
+
 
 ## Landing 🌌
+![image (5)](https://github.com/user-attachments/assets/4bdc4681-a90e-4e0a-b2fd-a7255147c6e3)
 
 ---
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/fa65db91-41ec-42f3-9c7e-1604d0ff548e/572f361f-a24d-4887-9916-8988638f8dd1.png)
-
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/303df72b-2767-4c97-b61e-c095a7b696ff/51a3913b-225a-4248-af28-59ea20262c22.png)
 
 <aside>
 👾
@@ -106,7 +107,9 @@
 
 ---
 
-[Myspace_011.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/5bde0740-92cb-4e08-9338-fc34ffe76211/Myspace_011.mp4)
+![KakaoTalk_20250109_114645812](https://github.com/user-attachments/assets/f73f82f3-3748-4480-9d4d-d1ee14e8450d)
+![KakaoTalk_20250109_114706336](https://github.com/user-attachments/assets/79c92695-56a1-4464-94b2-bf977731a95f)
+
 
 <aside>
 👾
@@ -119,7 +122,11 @@ My space는 버킷리스트를 추가할 수 있는 **3D 우주 공간**을 보�
 
 ---
 
-[Gallery_Real.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/5f264a08-01ef-40d5-9213-37feb76306ac/Gallery_Real.mp4)
+
+
+https://github.com/user-attachments/assets/937bf78a-0c09-442b-befa-360de3455e45
+
+
 
 <aside>
 👾
@@ -132,12 +139,15 @@ Gallery는 3*3 형태의 랜덤한 우주 관련 이미지를 불러옵니다. �
 
 ---
 
-[Horoscope_Real.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/43a2f1e7-3077-4a96-a121-19009a2158f6/Horoscope_Real.mp4)
+
+https://github.com/user-attachments/assets/30ceef27-bcdc-4972-a49e-de6195e5bf99
+
+
 
 <aside>
 👾
 
-Horoscope 탭에서는 별자리에 따른 오늘의 운세를 점쳐볼 수 있습니다. 본인의 별자리를 찾아서 클릭하면 오늘의 운세 탭으로 이동하게 됩니다. 이 탭에서는 openAI API를 통해 데이터를 받아와 전처리 후에 보여줍니다. 
+Horoscope 탭에서는 별자리에 따른 오늘의 운세를 점쳐볼 수 있습니다. 본인의 별자리를 찾아서 클릭하면 오늘의 운세 탭으로 이동하게 됩니다. 이 탭에서는 openAI API를 통해 데이터를 받아와 보여줍니다. 
 
 </aside>
 
@@ -145,7 +155,10 @@ Horoscope 탭에서는 별자리에 따른 오늘의 운세를 점쳐볼 수 있
 
 ---
 
-[Friend_Real.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/0c793b15-f7bd-4675-9e88-a84dde2a2940/Friend_Real.mp4)
+
+
+https://github.com/user-attachments/assets/9cc11139-21e8-44f0-be57-29238fc1d396
+
 
 <aside>
 👾
@@ -158,7 +171,11 @@ Friend 탭은 친구 목록 및 그 친구의 버킷리스트, 달성상태를 �
 
 ---
 
-[Mypage_Rrreal.mp4](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/1cdbad3a-9530-46b3-aee2-35392ea74a56/Mypage_Rrreal.mp4)
+
+
+
+https://github.com/user-attachments/assets/3893c4d5-aef2-4fc8-8e0c-6585d9754916
+
 
 <aside>
 👾
