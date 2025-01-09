@@ -2,8 +2,6 @@
 
 ---
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/05309ece-b0ce-479f-ae59-b313997b3160/image.png)
-
 ## 🌠 당신만의 우주를 만들어보세요
 
 <aside>
@@ -21,14 +19,16 @@
 ---
 
 [김다연](https://www.notion.so/fe3912cd997140ad885e5c31b11124b3?pvs=21) **(한양대 정보시스템학과 22, FE)**
+![다연](https://github.com/user-attachments/assets/cd1bcfae-1cef-45e4-8ca0-78b784fe40db)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/e2354f2e-c66e-4a5f-b956-97eb23932abc/image.png)
+
 
 [kingdayeon - Overview](https://github.com/kingdayeon)
 
 [박준호](https://www.notion.so/abd6a3ef013e45038b1fafa5f2ca111c?pvs=21) **(카이스트 전산학과 21, BE)**
+![준호](https://github.com/user-attachments/assets/1fd8dfe3-3585-4737-aad3-d82d059bc3df)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/485804dd-0560-46c2-a776-0ed65a5eede6/image.png)
+
 
 [gs18050 - Overview](https://github.com/gs18050)
 
